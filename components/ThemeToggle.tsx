@@ -8,7 +8,7 @@ export default function ThemeToggle() {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => setMounted(true), []);
-  if (!mounted) return <div className="w-8 h-8" />;
+  if (!mounted) return null;
 
   const isDark = theme === "dark";
 
@@ -16,12 +16,29 @@ export default function ThemeToggle() {
     <button
       onClick={() => setTheme(isDark ? "light" : "dark")}
       aria-label={isDark ? "切換為日間模式" : "切換為夜間模式"}
-      className="fixed top-4 right-4 z-50 w-8 h-8 flex items-center justify-center rounded-full transition-opacity duration-300 opacity-60 hover:opacity-100 focus:opacity-100 focus:outline-none focus:ring-2"
-      style={{ color: "var(--fg)" }}
+      style={{
+        position: "fixed",
+        top: "1.25rem",
+        right: "1.25rem",
+        zIndex: 9999,
+        width: "2.5rem",
+        height: "2.5rem",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        borderRadius: "9999px",
+        border: "1px solid var(--accent)",
+        background: "var(--bg)",
+        color: "var(--fg)",
+        cursor: "pointer",
+        opacity: 0.8,
+        transition: "opacity 0.2s ease",
+      }}
+      onMouseEnter={e => (e.currentTarget.style.opacity = "1")}
+      onMouseLeave={e => (e.currentTarget.style.opacity = "0.8")}
     >
       {isDark ? (
-        // Sun icon
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
           <circle cx="12" cy="12" r="5" />
           <line x1="12" y1="1" x2="12" y2="3" />
           <line x1="12" y1="21" x2="12" y2="23" />
@@ -33,8 +50,7 @@ export default function ThemeToggle() {
           <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
         </svg>
       ) : (
-        // Moon icon
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
           <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
         </svg>
       )}
