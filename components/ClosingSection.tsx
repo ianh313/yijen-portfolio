@@ -55,7 +55,21 @@ export default function ClosingSection() {
 
         <Reveal delay={320}>
           <p
-            className="font-serif mt-10 mb-16"
+            className="font-serif mt-10"
+            style={{
+              fontSize: "clamp(1rem,2vw,1.125rem)",
+              color: "var(--muted)",
+              lineHeight: 1.9,
+              whiteSpace: "pre-line",
+            }}
+          >
+            {closing.reflection}
+          </p>
+        </Reveal>
+
+        <Reveal delay={400}>
+          <p
+            className="font-serif mt-8 mb-16"
             style={{
               fontSize: "clamp(1rem,2vw,1.25rem)",
               color: "var(--fg)",
@@ -66,7 +80,7 @@ export default function ClosingSection() {
           </p>
         </Reveal>
 
-        <Reveal delay={400}>
+        <Reveal delay={480}>
           <div
             style={{
               borderTop: "1px solid var(--accent)",
@@ -97,7 +111,7 @@ export default function ClosingSection() {
           </div>
         </Reveal>
 
-        <Reveal delay={480}>
+        <Reveal delay={560}>
           <div className="mt-16 flex justify-start" aria-hidden="true">
             <div
               style={{
