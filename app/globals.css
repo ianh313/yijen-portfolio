@@ -186,7 +186,7 @@ body {
   border: none;
   padding: 0.25rem 0;
   text-align: left;
-  opacity: 0.28;
+  opacity: 0.18;
   transition: opacity 0.3s ease;
   text-decoration: none;
 }
@@ -268,8 +268,8 @@ body {
 /* ── Phase Section ── */
 .phase-section {
   position: relative;
-  padding-top: clamp(5rem, 12vh, 9rem);
-  padding-bottom: clamp(5rem, 12vh, 9rem);
+  padding-top: clamp(7rem, 16vh, 12rem);
+  padding-bottom: clamp(7rem, 16vh, 12rem);
   padding-left: clamp(1.5rem, 8vw, 7rem);
   padding-right: clamp(1.5rem, 8vw, 7rem);
 }
@@ -279,8 +279,8 @@ body {
     grid-template-columns: 5fr 6fr;
     column-gap: clamp(3rem, 5vw, 6rem);
     align-items: start;
-    padding-top: clamp(5rem, 12vh, 9rem);
-    padding-bottom: clamp(5rem, 12vh, 9rem);
+    padding-top: clamp(7rem, 16vh, 12rem);
+    padding-bottom: clamp(7rem, 16vh, 12rem);
   }
 }
 
@@ -333,15 +333,15 @@ body {
 
 /* ── Detail panel inner ── */
 .detail-panel {
-  padding-top: clamp(2.5rem, 5vh, 3.5rem);
+  padding-top: clamp(3rem, 6vh, 5rem);
   border-top: 1px solid var(--faint);
 }
 @media (min-width: 1440px) {
   .detail-panel {
     border-top: none;
-    padding-top: clamp(5rem, 12vh, 9rem);
+    padding-top: clamp(7rem, 16vh, 12rem);
     border-left: 1px solid var(--faint);
-    padding-left: clamp(2rem, 4vw, 4rem);
+    padding-left: clamp(2.5rem, 5vw, 5rem);
     min-height: 60vh;
   }
 }

@@ -21,7 +21,7 @@ import SystemDiagram      from "./visuals/SystemDiagram";
 
 import { ch1, ch2, ch3, ch4, ch5, phaseDetails, PHASES, PhaseId } from "@/content/chapters";
 
-// ── Shared detail primitives ─────────────────────────────────────────────────
+// ── Shared detail primitives ────────────────────────────────────────────────
 
 function DSectionHeading({ children }: { children: React.ReactNode }) {
   return <div className="detail-section-heading">{children}</div>;
@@ -29,27 +29,30 @@ function DSectionHeading({ children }: { children: React.ReactNode }) {
 
 function DText({ children }: { children: React.ReactNode }) {
   return (
-    <p
-      style={{
-        fontFamily: "var(--font-sans)",
-        fontSize: "0.9375rem",
-        color: "var(--fg)",
-        lineHeight: 1.8,
-      }}
-    >
+    <p style={{ fontFamily: "var(--font-sans)", fontSize: "0.9375rem", color: "var(--fg)", lineHeight: 1.8 }}>
       {children}
     </p>
   );
 }
 
-function DSerif({ children }: { children: React.ReactNode }) {
+function DSerif({ children, style }: { children: React.ReactNode; style?: React.CSSProperties }) {
+  return (
+    <p style={{ fontFamily: "var(--font-serif)", fontSize: "0.9375rem", color: "var(--fg)", lineHeight: 1.85, whiteSpace: "pre-line", ...style }}>
+      {children}
+    </p>
+  );
+}
+
+function DPullQuote({ children }: { children: React.ReactNode }) {
   return (
     <p
       style={{
         fontFamily: "var(--font-serif)",
-        fontSize: "0.9375rem",
+        fontSize: "clamp(1.25rem,2.5vw,1.625rem)",
+        fontWeight: 300,
         color: "var(--fg)",
-        lineHeight: 1.85,
+        lineHeight: 1.55,
+        marginBottom: "1.5rem",
       }}
     >
       {children}
@@ -59,15 +62,7 @@ function DSerif({ children }: { children: React.ReactNode }) {
 
 function DMuted({ children }: { children: React.ReactNode }) {
   return (
-    <p
-      style={{
-        fontFamily: "var(--font-sans)",
-        fontSize: "0.9375rem",
-        color: "var(--muted)",
-        lineHeight: 1.8,
-        fontStyle: "italic",
-      }}
-    >
+    <p style={{ fontFamily: "var(--font-sans)", fontSize: "0.9375rem", color: "var(--muted)", lineHeight: 1.8, fontStyle: "italic" }}>
       {children}
     </p>
   );
@@ -86,14 +81,25 @@ function EvidenceList({ items }: { items: string[] }) {
   );
 }
 
+function DiagramBlock({ children }: { children: React.ReactNode }) {
+  return (
+    <div style={{ marginBottom: "2.5rem", opacity: 0.9 }}>
+      {children}
+    </div>
+  );
+}
+
 // ── Per-phase detail panels ──────────────────────────────────────────────────
 
 function ConnectionDetail() {
   const d = phaseDetails.connection;
   return (
     <>
-      <DSectionHeading>INSIGHT</DSectionHeading>
-      <DSerif>{d.insight}</DSerif>
+      <DiagramBlock><ConnectionDiagram /></DiagramBlock>
+      <DSerif>{ch1.narrative}</DSerif>
+      <div style={{ marginTop: "1.25rem", marginBottom: "2rem" }}>
+        <DMuted>{ch1.insight}</DMuted>
+      </div>
       <DSectionHeading>EVIDENCE</DSectionHeading>
       <EvidenceList items={d.evidence as string[]} />
       <DSectionHeading>PROCESS</DSectionHeading>
@@ -108,16 +114,16 @@ function TranslationDetail() {
   const d = phaseDetails.translation;
   return (
     <>
-      <DSectionHeading>INSIGHT</DSectionHeading>
+      <DiagramBlock><TranslationDiagram /></DiagramBlock>
       <DSerif>{d.insight}</DSerif>
-      <DSectionHeading>EVIDENCE</DSectionHeading>
-      <EvidenceList items={d.evidence as string[]} />
-      <DSectionHeading>PROCESS</DSectionHeading>
-      <DText>{d.process}</DText>
-      <DSectionHeading>VISUAL — 比例轉換</DSectionHeading>
-      <div className="diagram-container"><TranslationDiagram /></div>
-      <DSectionHeading>SHIFT →</DSectionHeading>
-      <DMuted>{d.shift}</DMuted>
+      <div style={{ marginTop: "2rem" }}>
+        <DSectionHeading>EVIDENCE</DSectionHeading>
+        <EvidenceList items={d.evidence as string[]} />
+        <DSectionHeading>PROCESS</DSectionHeading>
+        <DText>{d.process}</DText>
+        <DSectionHeading>SHIFT →</DSectionHeading>
+        <DMuted>{d.shift}</DMuted>
+      </div>
     </>
   );
 }
@@ -126,16 +132,16 @@ function BreakpointDetail() {
   const d = phaseDetails.breakpoint;
   return (
     <>
-      <DSectionHeading>INSIGHT</DSectionHeading>
+      <DiagramBlock><BreakpointDiagram /></DiagramBlock>
       <DSerif>{d.insight}</DSerif>
-      <DSectionHeading>VISUAL — 資訊斷鏈</DSectionHeading>
-      <div className="diagram-container"><BreakpointDiagram /></div>
-      <DSectionHeading>EVIDENCE</DSectionHeading>
-      <EvidenceList items={d.evidence as string[]} />
-      <DSectionHeading>PROCESS</DSectionHeading>
-      <DText>{d.process}</DText>
-      <DSectionHeading>SHIFT →</DSectionHeading>
-      <DMuted>{d.shift}</DMuted>
+      <div style={{ marginTop: "2rem" }}>
+        <DSectionHeading>EVIDENCE</DSectionHeading>
+        <EvidenceList items={d.evidence as string[]} />
+        <DSectionHeading>PROCESS</DSectionHeading>
+        <DText>{d.process}</DText>
+        <DSectionHeading>SHIFT →</DSectionHeading>
+        <DMuted>{d.shift}</DMuted>
+      </div>
     </>
   );
 }
@@ -144,28 +150,31 @@ function CrossingDetail() {
   const d = phaseDetails.crossing;
   return (
     <>
-      <DSectionHeading>INSIGHT</DSectionHeading>
+      <DiagramBlock><CrossingDiagram /></DiagramBlock>
       <DSerif>{d.insight}</DSerif>
-      <DSectionHeading>VISUAL — 邊界跨越</DSectionHeading>
-      <div className="diagram-container"><CrossingDiagram /></div>
-      <DSectionHeading>EVIDENCE</DSectionHeading>
-      <EvidenceList items={d.evidence as string[]} />
-      <DSectionHeading>PROCESS</DSectionHeading>
-      <DText>{d.process}</DText>
-      <DSectionHeading>SHIFT →</DSectionHeading>
-      <DMuted>{d.shift}</DMuted>
+      <div style={{ marginTop: "2rem" }}>
+        <DSectionHeading>EVIDENCE</DSectionHeading>
+        <EvidenceList items={d.evidence as string[]} />
+        <DSectionHeading>PROCESS</DSectionHeading>
+        <DText>{d.process}</DText>
+        <DSectionHeading>SHIFT →</DSectionHeading>
+        <DMuted>{d.shift}</DMuted>
+      </div>
     </>
   );
 }
 
 function SystemDetail() {
   const d = phaseDetails.system;
+  // insight starts with "不是帶著答案回去，而是帶著問題回去。\n\n..."
+  const insightParts = d.insight.split("\n\n");
   return (
     <>
-      <DSectionHeading>INSIGHT</DSectionHeading>
-      <DSerif>{d.insight}</DSerif>
-      <DSectionHeading>VISUAL — 追蹤鏈</DSectionHeading>
-      <div className="diagram-container"><SystemDiagram /></div>
+      <DPullQuote>{insightParts[0]}</DPullQuote>
+      {insightParts[1] && <DSerif>{insightParts[1]}</DSerif>}
+      <div style={{ marginTop: "2rem", marginBottom: "2.5rem" }}>
+        <DiagramBlock><SystemDiagram /></DiagramBlock>
+      </div>
       {d.sections.map((section, i) => (
         <div key={i}>
           <DSectionHeading>{section.label} — {section.zh}</DSectionHeading>
@@ -191,7 +200,6 @@ export default function SiteContent() {
   const [openPhaseId, setOpenPhaseId]     = useState<PhaseId | null>(null);
   const [activePhaseId, setActivePhaseId] = useState<PhaseId>(PHASE_IDS[0]);
 
-  // Active phase via IntersectionObserver
   useEffect(() => {
     const observers: IntersectionObserver[] = [];
     PHASE_IDS.forEach((id) => {
@@ -207,14 +215,12 @@ export default function SiteContent() {
     return () => observers.forEach((o) => o.disconnect());
   }, []);
 
-  // Hash update on active phase
   useEffect(() => {
     if (typeof window !== "undefined") {
       history.replaceState(null, "", `#${activePhaseId}`);
     }
   }, [activePhaseId]);
 
-  // ESC closes detail
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       if (e.key === "Escape" && openPhaseId) setOpenPhaseId(null);
@@ -237,17 +243,10 @@ export default function SiteContent() {
   }, []);
 
   return (
-    <main
-      className="relative"
-      style={{ background: "var(--bg)", color: "var(--fg)", overflowX: "hidden" }}
-    >
+    <main className="relative" style={{ background: "var(--bg)", color: "var(--fg)", overflowX: "hidden" }}>
       <ThemeToggle />
       <JourneyLine />
-      <PhaseRail
-        activePhaseId={activePhaseId}
-        openPhaseId={openPhaseId}
-        onNavigate={navigateToPhase}
-      />
+      <PhaseRail activePhaseId={activePhaseId} openPhaseId={openPhaseId} onNavigate={navigateToPhase} />
       <MobilePhaseIndicator activePhaseId={activePhaseId} />
 
       <Hero />
@@ -262,9 +261,7 @@ export default function SiteContent() {
         company={ch1.company}
         role={ch1.role}
         mainStatement={ch1.openStatement}
-        supportingLine={ch1.narrative}
-        metaNote={ch1.insight}
-        visual={<ConnectionDiagram />}
+        supportingLine={ch1.insight}
         detail={<ConnectionDetail />}
         isDetailOpen={openPhaseId === "connection"}
         onExplore={() => handleExplore("connection")}
@@ -283,7 +280,6 @@ export default function SiteContent() {
         role={ch2.role}
         mainStatement={`${ch2.fullScreenA}\n${ch2.fullScreenB}`}
         supportingLine={ch2.subStatement}
-        metaNote={ch2.narrative}
         detail={<TranslationDetail />}
         isDetailOpen={openPhaseId === "translation"}
         onExplore={() => handleExplore("translation")}
@@ -303,9 +299,7 @@ export default function SiteContent() {
         company={ch3.company}
         role={ch3.role}
         mainStatement={ch3.breakpointStatement}
-        supportingLine={ch3.narrative}
-        metaNote={ch3.insight}
-        visual={<BreakpointDiagram />}
+        supportingLine="是不是有些事情，本來不應該這麼容易消失？"
         detail={<BreakpointDetail />}
         isDetailOpen={openPhaseId === "breakpoint"}
         onExplore={() => handleExplore("breakpoint")}
@@ -323,9 +317,7 @@ export default function SiteContent() {
         location={ch4.location}
         role={ch4.role}
         mainStatement={ch4.openQuestion}
-        supportingLine={`${ch4.pivot}\n\n${ch4.keyInsight}`}
-        metaNote={ch4.context}
-        visual={<CrossingDiagram />}
+        supportingLine={ch4.pivot}
         detail={<CrossingDetail />}
         isDetailOpen={openPhaseId === "crossing"}
         onExplore={() => handleExplore("crossing")}
@@ -343,8 +335,6 @@ export default function SiteContent() {
         role={ch5.role}
         mainStatement={ch5.newQuestion}
         supportingLine={ch5.pivot}
-        metaNote={ch5.context}
-        visual={<SystemDiagram />}
         detail={<SystemDetail />}
         isDetailOpen={openPhaseId === "system"}
         onExplore={() => handleExplore("system")}

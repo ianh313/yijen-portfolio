@@ -14,8 +14,6 @@ interface PhaseSectionProps {
   location?: string;
   mainStatement: string;
   supportingLine?: string;
-  metaNote?: string;
-  visual?: React.ReactNode;
   detail: React.ReactNode;
   isDetailOpen: boolean;
   onExplore: () => void;
@@ -25,8 +23,8 @@ interface PhaseSectionProps {
 export default function PhaseSection({
   phaseNumber, phaseEnLabel, phaseZhLabel, phaseId,
   period, company, role, location,
-  mainStatement, supportingLine, metaNote,
-  visual, detail,
+  mainStatement, supportingLine,
+  detail,
   isDetailOpen, onExplore, onClose,
 }: PhaseSectionProps) {
   const closeRef   = useRef<HTMLButtonElement>(null);
@@ -45,35 +43,45 @@ export default function PhaseSection({
       data-chapter={phaseId}
       aria-label={`Phase ${phaseNumber}: ${phaseEnLabel}`}
     >
-      {/* Journey line node */}
       <div
         className="j-node"
         data-node={phaseId}
         style={{ top: "30%", left: "clamp(1rem,3vw,2.5rem)", position: "absolute" }}
       />
 
-      {/* OVERVIEW */}
+      {/* OVERVIEW — sparse, one main idea */}
       <div className="phase-overview">
         <Reveal delay={0}>
-          <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "1.25rem" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "2rem" }}>
             <span
               style={{
                 fontFamily: "var(--font-inter)",
-                fontSize: "0.5625rem",
-                letterSpacing: "0.12em",
+                fontSize: "0.5rem",
+                letterSpacing: "0.16em",
                 textTransform: "uppercase",
                 color: "var(--muted)",
+                opacity: 0.6,
               }}
             >
               {phaseNumber}
             </span>
-            <span className="chapter-label">{phaseEnLabel}</span>
+            <span
+              style={{
+                fontFamily: "var(--font-inter)",
+                fontSize: "0.5625rem",
+                letterSpacing: "0.18em",
+                textTransform: "uppercase",
+                color: "var(--accent)",
+              }}
+            >
+              {phaseEnLabel}
+            </span>
             <span
               style={{
                 fontFamily: "var(--font-sans)",
-                fontSize: "0.75rem",
+                fontSize: "0.6875rem",
                 color: "var(--muted)",
-                opacity: 0.6,
+                opacity: 0.45,
               }}
             >
               {phaseZhLabel}
@@ -81,15 +89,16 @@ export default function PhaseSection({
           </div>
         </Reveal>
 
-        <Reveal delay={50}>
+        <Reveal delay={40}>
           <p
             style={{
               fontFamily: "var(--font-sans)",
-              fontSize: "0.875rem",
+              fontSize: "0.8125rem",
               color: "var(--muted)",
-              letterSpacing: "0.03em",
+              opacity: 0.55,
+              letterSpacing: "0.02em",
               lineHeight: 1.6,
-              marginBottom: "1.25rem",
+              marginBottom: "2.5rem",
             }}
           >
             {period}
@@ -103,12 +112,12 @@ export default function PhaseSection({
           <p
             style={{
               fontFamily: "var(--font-serif)",
-              fontSize: "clamp(1.375rem,3.5vw,2rem)",
+              fontSize: "clamp(1.5rem,3.75vw,2.25rem)",
               fontWeight: 300,
               color: "var(--fg)",
               lineHeight: 1.45,
               whiteSpace: "pre-line",
-              marginBottom: "1rem",
+              marginBottom: "1.75rem",
             }}
           >
             {mainStatement}
@@ -116,42 +125,19 @@ export default function PhaseSection({
         </Reveal>
 
         {supportingLine && (
-          <Reveal delay={160}>
+          <Reveal delay={180}>
             <p
               style={{
                 fontFamily: "var(--font-serif)",
-                fontSize: "clamp(0.9375rem,2vw,1.125rem)",
+                fontSize: "clamp(1rem,2vw,1.1875rem)",
                 color: "var(--muted)",
-                lineHeight: 1.75,
+                lineHeight: 1.8,
                 whiteSpace: "pre-line",
-                marginBottom: "0.75rem",
+                marginBottom: "0.5rem",
               }}
             >
               {supportingLine}
             </p>
-          </Reveal>
-        )}
-
-        {metaNote && (
-          <Reveal delay={200}>
-            <p
-              style={{
-                fontFamily: "var(--font-sans)",
-                fontSize: "0.8125rem",
-                color: "var(--muted)",
-                opacity: 0.55,
-                letterSpacing: "0.04em",
-                marginTop: "0.5rem",
-              }}
-            >
-              {metaNote}
-            </p>
-          </Reveal>
-        )}
-
-        {visual && (
-          <Reveal delay={220}>
-            <div className="diagram-container">{visual}</div>
           </Reveal>
         )}
 
@@ -171,7 +157,7 @@ export default function PhaseSection({
         )}
       </div>
 
-      {/* DETAIL (expandable) */}
+      {/* DETAIL */}
       <div
         id={`${phaseId}-detail`}
         className={`detail-expand${isDetailOpen ? " open" : ""}`}
