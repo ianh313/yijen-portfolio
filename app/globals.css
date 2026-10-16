@@ -162,3 +162,282 @@ body {
 .dark .node-lit circle {
   filter: drop-shadow(0 0 6px var(--accent));
 }
+
+/* ── Phase Rail (desktop fixed nav) ── */
+.phase-rail {
+  position: fixed;
+  left: 1.25rem;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 40;
+  display: none;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+@media (min-width: 1024px) {
+  .phase-rail { display: flex; }
+}
+.phase-rail-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0.25rem 0;
+  text-align: left;
+  opacity: 0.28;
+  transition: opacity 0.3s ease;
+  text-decoration: none;
+}
+.phase-rail-item:hover,
+.phase-rail-item.active {
+  opacity: 1;
+}
+.phase-rail-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 9999px;
+  border: 1px solid var(--accent);
+  flex-shrink: 0;
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+.phase-rail-item.active .phase-rail-dot {
+  background: var(--accent);
+  transform: scale(1.4);
+}
+.phase-rail-num {
+  font-family: var(--font-inter);
+  font-size: 0.5625rem;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+  width: 1.25rem;
+  flex-shrink: 0;
+}
+.phase-rail-label {
+  font-family: var(--font-inter);
+  font-size: 0.5rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--fg);
+  white-space: nowrap;
+  max-width: 0;
+  overflow: hidden;
+  transition: max-width 0.3s ease, opacity 0.3s ease;
+  opacity: 0;
+}
+.phase-rail-item:hover .phase-rail-label,
+.phase-rail-item.active .phase-rail-label {
+  max-width: 7rem;
+  opacity: 1;
+}
+
+/* ── Mobile Phase Indicator ── */
+.mobile-phase-indicator {
+  position: fixed;
+  bottom: 1.25rem;
+  right: 1.25rem;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.7rem;
+  border: 1px solid var(--accent);
+  border-radius: 9999px;
+  background: var(--bg);
+  opacity: 0.7;
+  pointer-events: none;
+}
+@media (min-width: 1024px) {
+  .mobile-phase-indicator { display: none; }
+}
+.mobile-phase-num {
+  font-family: var(--font-inter);
+  font-size: 0.5625rem;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+}
+.mobile-phase-label {
+  font-family: var(--font-inter);
+  font-size: 0.5rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--fg);
+}
+
+/* ── Phase Section ── */
+.phase-section {
+  position: relative;
+  padding-top: clamp(5rem, 12vh, 9rem);
+  padding-bottom: clamp(5rem, 12vh, 9rem);
+  padding-left: clamp(1.5rem, 8vw, 7rem);
+  padding-right: clamp(1.5rem, 8vw, 7rem);
+}
+@media (min-width: 1440px) {
+  .phase-section.detail-open {
+    display: grid;
+    grid-template-columns: 5fr 6fr;
+    column-gap: clamp(3rem, 5vw, 6rem);
+    align-items: start;
+    padding-top: clamp(5rem, 12vh, 9rem);
+    padding-bottom: clamp(5rem, 12vh, 9rem);
+  }
+}
+
+/* ── Overview block ── */
+.phase-overview {
+  max-width: 40rem;
+}
+@media (min-width: 1440px) {
+  .phase-section.detail-open .phase-overview {
+    max-width: none;
+  }
+}
+
+/* ── Detail expand (mobile + 1024–1440) ── */
+.detail-expand {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.detail-expand.open {
+  grid-template-rows: 1fr;
+}
+.detail-expand-inner {
+  overflow: hidden;
+  padding-top: 1px;
+}
+/* Desktop 1440+: side-by-side, use opacity/translate instead */
+@media (min-width: 1440px) {
+  .detail-expand {
+    display: block;
+    grid-template-rows: unset;
+    overflow: visible;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(1.5rem);
+    transition: opacity 0.45s ease, transform 0.45s ease, visibility 0.45s;
+    pointer-events: none;
+  }
+  .detail-expand.open {
+    grid-template-rows: unset;
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+    pointer-events: auto;
+  }
+  .detail-expand-inner {
+    overflow: visible;
+  }
+}
+
+/* ── Detail panel inner ── */
+.detail-panel {
+  padding-top: clamp(2.5rem, 5vh, 3.5rem);
+  border-top: 1px solid var(--faint);
+}
+@media (min-width: 1440px) {
+  .detail-panel {
+    border-top: none;
+    padding-top: clamp(5rem, 12vh, 9rem);
+    border-left: 1px solid var(--faint);
+    padding-left: clamp(2rem, 4vw, 4rem);
+    min-height: 60vh;
+  }
+}
+
+/* ── Explore / close buttons ── */
+.explore-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 2rem;
+  font-family: var(--font-inter);
+  font-size: 0.5625rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: gap 0.2s ease;
+}
+.explore-btn:hover { gap: 0.75rem; }
+.explore-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+.explore-btn-arrow {
+  display: inline-block;
+  width: 1.5rem;
+  height: 1px;
+  background: var(--accent);
+  position: relative;
+  transition: width 0.2s ease;
+}
+.explore-btn:hover .explore-btn-arrow { width: 2rem; }
+.explore-btn-arrow::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: -2.5px;
+  width: 5px;
+  height: 5px;
+  border-right: 1px solid var(--accent);
+  border-top: 1px solid var(--accent);
+  transform: rotate(45deg);
+}
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-inter);
+  font-size: 0.5625rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  margin-bottom: 2rem;
+  transition: color 0.2s ease;
+}
+.back-btn:hover { color: var(--fg); }
+.back-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* ── Detail section heading ── */
+.detail-section-heading {
+  font-family: var(--font-inter);
+  font-size: 0.5625rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-top: 1.75rem;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.detail-section-heading::before {
+  content: '';
+  display: block;
+  width: 1rem;
+  height: 1px;
+  background: var(--accent);
+  opacity: 0.5;
+}
+.detail-section-heading:first-child { margin-top: 0; }
+
+/* ── SVG diagram ── */
+.diagram-container {
+  margin-top: 1.75rem;
+  opacity: 0.85;
+}
+.diagram-container svg { max-width: 100%; height: auto; }

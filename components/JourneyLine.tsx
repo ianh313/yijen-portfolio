@@ -9,7 +9,7 @@ const NODE_IDS = [
   "breakpoint-seq",
   "breakpoint",
   "crossing",
-  "arkiteki",
+  "system",
   "tracking-payoff",
   "method",
   "future",
