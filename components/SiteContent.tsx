@@ -27,42 +27,9 @@ function DSectionHeading({ children }: { children: React.ReactNode }) {
   return <div className="detail-section-heading">{children}</div>;
 }
 
-function DText({ children }: { children: React.ReactNode }) {
+function DBody({ children }: { children: React.ReactNode }) {
   return (
     <p style={{ fontFamily: "var(--font-sans)", fontSize: "0.9375rem", color: "var(--fg)", lineHeight: 1.8 }}>
-      {children}
-    </p>
-  );
-}
-
-function DSerif({ children, style }: { children: React.ReactNode; style?: React.CSSProperties }) {
-  return (
-    <p style={{ fontFamily: "var(--font-serif)", fontSize: "0.9375rem", color: "var(--fg)", lineHeight: 1.85, whiteSpace: "pre-line", ...style }}>
-      {children}
-    </p>
-  );
-}
-
-function DPullQuote({ children }: { children: React.ReactNode }) {
-  return (
-    <p
-      style={{
-        fontFamily: "var(--font-serif)",
-        fontSize: "clamp(1.25rem,2.5vw,1.625rem)",
-        fontWeight: 300,
-        color: "var(--fg)",
-        lineHeight: 1.55,
-        marginBottom: "1.5rem",
-      }}
-    >
-      {children}
-    </p>
-  );
-}
-
-function DMuted({ children }: { children: React.ReactNode }) {
-  return (
-    <p style={{ fontFamily: "var(--font-sans)", fontSize: "0.9375rem", color: "var(--muted)", lineHeight: 1.8, fontStyle: "italic" }}>
       {children}
     </p>
   );
@@ -72,7 +39,7 @@ function EvidenceList({ items }: { items: string[] }) {
   return (
     <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
       {items.map((item, i) => (
-        <li key={i} className="evidence-item" style={{ marginBottom: "0.55rem" }}>
+        <li key={i} className="evidence-item" style={{ marginBottom: "0.65rem" }}>
           <span className="evidence-dot" />
           <span>{item}</span>
         </li>
@@ -81,31 +48,66 @@ function EvidenceList({ items }: { items: string[] }) {
   );
 }
 
+// Insight rendered as a small annotation — clearly subordinate to evidence
+function InsightAnnotation({ children }: { children: React.ReactNode }) {
+  return (
+    <p
+      style={{
+        fontFamily: "var(--font-serif)",
+        fontSize: "0.875rem",
+        fontStyle: "italic",
+        color: "var(--muted)",
+        lineHeight: 1.9,
+        borderLeft: "2px solid var(--accent)",
+        paddingLeft: "1rem",
+        opacity: 0.72,
+        whiteSpace: "pre-line",
+      }}
+    >
+      {children}
+    </p>
+  );
+}
+
 function DiagramBlock({ children }: { children: React.ReactNode }) {
   return (
-    <div style={{ marginBottom: "2.5rem", opacity: 0.9 }}>
+    <div style={{ marginTop: "0.5rem", marginBottom: "0.5rem", opacity: 0.88 }}>
       {children}
     </div>
   );
 }
 
-// ── Per-phase detail panels ──────────────────────────────────────────────────
+// ── Per-phase detail panels — EXPERIENCE first, insight second ───────────────
 
 function ConnectionDetail() {
   const d = phaseDetails.connection;
   return (
     <>
-      <DiagramBlock><ConnectionDiagram /></DiagramBlock>
-      <DSerif>{ch1.narrative}</DSerif>
-      <div style={{ marginTop: "1.25rem", marginBottom: "2rem" }}>
-        <DMuted>{ch1.insight}</DMuted>
-      </div>
+      {/* Evidence — primary, prominent */}
       <DSectionHeading>EVIDENCE</DSectionHeading>
       <EvidenceList items={d.evidence as string[]} />
+
+      {/* Process — factual work narrative */}
       <DSectionHeading>PROCESS</DSectionHeading>
-      <DText>{d.process}</DText>
-      <DSectionHeading>SHIFT →</DSectionHeading>
-      <DMuted>{d.shift}</DMuted>
+      <DBody>{d.process}</DBody>
+
+      {/* Narrative from ch1 — "誰會停下來" */}
+      <DSectionHeading>REFLECTION</DSectionHeading>
+      <DBody>{ch1.narrative}</DBody>
+
+      {/* Diagram */}
+      <DSectionHeading>DIAGRAM</DSectionHeading>
+      <DiagramBlock><ConnectionDiagram /></DiagramBlock>
+
+      {/* Insight — annotation, smallest weight */}
+      <div style={{ marginTop: "2rem" }}>
+        <InsightAnnotation>{d.insight}</InsightAnnotation>
+      </div>
+
+      {/* Shift */}
+      <div style={{ marginTop: "1.5rem" }}>
+        <InsightAnnotation>{d.shift}</InsightAnnotation>
+      </div>
     </>
   );
 }
@@ -114,15 +116,20 @@ function TranslationDetail() {
   const d = phaseDetails.translation;
   return (
     <>
+      <DSectionHeading>EVIDENCE</DSectionHeading>
+      <EvidenceList items={d.evidence as string[]} />
+
+      <DSectionHeading>PROCESS</DSectionHeading>
+      <DBody>{d.process}</DBody>
+
+      <DSectionHeading>DIAGRAM — 比例轉換</DSectionHeading>
       <DiagramBlock><TranslationDiagram /></DiagramBlock>
-      <DSerif>{d.insight}</DSerif>
+
       <div style={{ marginTop: "2rem" }}>
-        <DSectionHeading>EVIDENCE</DSectionHeading>
-        <EvidenceList items={d.evidence as string[]} />
-        <DSectionHeading>PROCESS</DSectionHeading>
-        <DText>{d.process}</DText>
-        <DSectionHeading>SHIFT →</DSectionHeading>
-        <DMuted>{d.shift}</DMuted>
+        <InsightAnnotation>{d.insight}</InsightAnnotation>
+      </div>
+      <div style={{ marginTop: "1.5rem" }}>
+        <InsightAnnotation>{d.shift}</InsightAnnotation>
       </div>
     </>
   );
@@ -132,15 +139,20 @@ function BreakpointDetail() {
   const d = phaseDetails.breakpoint;
   return (
     <>
+      <DSectionHeading>EVIDENCE</DSectionHeading>
+      <EvidenceList items={d.evidence as string[]} />
+
+      <DSectionHeading>PROCESS</DSectionHeading>
+      <DBody>{d.process}</DBody>
+
+      <DSectionHeading>DIAGRAM — 資訊斷鏈</DSectionHeading>
       <DiagramBlock><BreakpointDiagram /></DiagramBlock>
-      <DSerif>{d.insight}</DSerif>
+
       <div style={{ marginTop: "2rem" }}>
-        <DSectionHeading>EVIDENCE</DSectionHeading>
-        <EvidenceList items={d.evidence as string[]} />
-        <DSectionHeading>PROCESS</DSectionHeading>
-        <DText>{d.process}</DText>
-        <DSectionHeading>SHIFT →</DSectionHeading>
-        <DMuted>{d.shift}</DMuted>
+        <InsightAnnotation>{d.insight}</InsightAnnotation>
+      </div>
+      <div style={{ marginTop: "1.5rem" }}>
+        <InsightAnnotation>{d.shift}</InsightAnnotation>
       </div>
     </>
   );
@@ -150,15 +162,20 @@ function CrossingDetail() {
   const d = phaseDetails.crossing;
   return (
     <>
+      <DSectionHeading>EVIDENCE</DSectionHeading>
+      <EvidenceList items={d.evidence as string[]} />
+
+      <DSectionHeading>PROCESS</DSectionHeading>
+      <DBody>{d.process}</DBody>
+
+      <DSectionHeading>DIAGRAM — 邊界跨越</DSectionHeading>
       <DiagramBlock><CrossingDiagram /></DiagramBlock>
-      <DSerif>{d.insight}</DSerif>
+
       <div style={{ marginTop: "2rem" }}>
-        <DSectionHeading>EVIDENCE</DSectionHeading>
-        <EvidenceList items={d.evidence as string[]} />
-        <DSectionHeading>PROCESS</DSectionHeading>
-        <DText>{d.process}</DText>
-        <DSectionHeading>SHIFT →</DSectionHeading>
-        <DMuted>{d.shift}</DMuted>
+        <InsightAnnotation>{d.insight}</InsightAnnotation>
+      </div>
+      <div style={{ marginTop: "1.5rem" }}>
+        <InsightAnnotation>{d.shift}</InsightAnnotation>
       </div>
     </>
   );
@@ -166,27 +183,34 @@ function CrossingDetail() {
 
 function SystemDetail() {
   const d = phaseDetails.system;
-  // insight starts with "不是帶著答案回去，而是帶著問題回去。\n\n..."
-  const insightParts = d.insight.split("\n\n");
   return (
     <>
-      <DPullQuote>{insightParts[0]}</DPullQuote>
-      {insightParts[1] && <DSerif>{insightParts[1]}</DSerif>}
-      <div style={{ marginTop: "2rem", marginBottom: "2.5rem" }}>
-        <DiagramBlock><SystemDiagram /></DiagramBlock>
-      </div>
+      {/* All 5 work sections — experience is the main content */}
       {d.sections.map((section, i) => (
         <div key={i}>
           <DSectionHeading>{section.label} — {section.zh}</DSectionHeading>
           <EvidenceList items={section.facts} />
         </div>
       ))}
+
+      {/* Diagram */}
+      <DSectionHeading>DIAGRAM — 追蹤鏈</DSectionHeading>
+      <DiagramBlock><SystemDiagram /></DiagramBlock>
+
+      {/* Outcome */}
       <DSectionHeading>OUTCOME</DSectionHeading>
-      <DMuted>{d.shift}</DMuted>
+      <DBody>{d.shift}</DBody>
+
+      {/* Tags */}
       <div style={{ marginTop: "1.5rem", display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
         {d.tags.map((tag) => (
           <span key={tag} className="skill-tag">{tag}</span>
         ))}
+      </div>
+
+      {/* Insight annotation — last, smallest */}
+      <div style={{ marginTop: "2.5rem" }}>
+        <InsightAnnotation>{d.insight}</InsightAnnotation>
       </div>
     </>
   );
@@ -260,8 +284,8 @@ export default function SiteContent() {
         period={ch1.period}
         company={ch1.company}
         role={ch1.role}
-        mainStatement={ch1.openStatement}
-        supportingLine={ch1.insight}
+        workAreas={ch1.workAreas}
+        insight={ch1.overviewInsight}
         detail={<ConnectionDetail />}
         isDetailOpen={openPhaseId === "connection"}
         onExplore={() => handleExplore("connection")}
@@ -278,8 +302,8 @@ export default function SiteContent() {
         company={ch2.company}
         location={ch2.location}
         role={ch2.role}
-        mainStatement={`${ch2.fullScreenA}\n${ch2.fullScreenB}`}
-        supportingLine={ch2.subStatement}
+        workAreas={ch2.workAreas}
+        insight={ch2.overviewInsight}
         detail={<TranslationDetail />}
         isDetailOpen={openPhaseId === "translation"}
         onExplore={() => handleExplore("translation")}
@@ -298,8 +322,8 @@ export default function SiteContent() {
         period={ch3.period}
         company={ch3.company}
         role={ch3.role}
-        mainStatement={ch3.breakpointStatement}
-        supportingLine="是不是有些事情，本來不應該這麼容易消失？"
+        workAreas={ch3.workAreas}
+        insight={ch3.overviewInsight}
         detail={<BreakpointDetail />}
         isDetailOpen={openPhaseId === "breakpoint"}
         onExplore={() => handleExplore("breakpoint")}
@@ -316,8 +340,8 @@ export default function SiteContent() {
         company={ch4.company}
         location={ch4.location}
         role={ch4.role}
-        mainStatement={ch4.openQuestion}
-        supportingLine={ch4.pivot}
+        workAreas={ch4.workAreas}
+        insight={ch4.overviewInsight}
         detail={<CrossingDetail />}
         isDetailOpen={openPhaseId === "crossing"}
         onExplore={() => handleExplore("crossing")}
@@ -331,10 +355,10 @@ export default function SiteContent() {
         phaseZhLabel="系統"
         phaseId="system"
         period={ch5.period}
-        company={ch5.company}
+        company="ArkiTeki"
         role={ch5.role}
-        mainStatement={ch5.newQuestion}
-        supportingLine={ch5.pivot}
+        workAreas={ch5.workAreas}
+        insight={ch5.overviewInsight}
         detail={<SystemDetail />}
         isDetailOpen={openPhaseId === "system"}
         onExplore={() => handleExplore("system")}
